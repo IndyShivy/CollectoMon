@@ -1,0 +1,34 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Collectomon" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="android:statusBarColor">@color/status_bar_color</item>
+
+
+    </style>
+
+    <style name="Theme.Collectomon" parent="Base.Theme.Collectomon" />
+
+    <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">#45494A</item>
+    </style>
+
+    <style name="checkBoxStyleCollect" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/icon_background</item>
+        <item name="android:textColorSecondary">#45494A</item>
+    </style>
+
+    <style name="CustomBottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="itemIconTint">@color/colorAccent</item>
+        <item name="itemTextColor">@color/white</item>
+    </style>
+
+
+    <style name="TabIndicatorStyle">
+        <item name="android:background">@drawable/tab_indicator_background</item>
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+    </style>
+
+</resources>
