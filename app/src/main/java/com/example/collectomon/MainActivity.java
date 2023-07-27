@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.lang.reflect.Field;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment activeFragment;
 
+    @SuppressLint("ObsoleteSdkInt")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +42,9 @@ public class MainActivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(getColor(R.color.bottom_bar));
         }
 
-
         bottomNavigationView = findViewById(R.id.navigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
-
+        //bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
+        bottomNavigationView.setOnItemSelectedListener(navItemSelectedListener);
         fragmentManager = getSupportFragmentManager();
 
         homeFragment = new HomeFragment();
@@ -61,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.navigationView);
 
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener navItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private NavigationBarView.OnItemSelectedListener  navItemSelectedListener = new NavigationBarView.OnItemSelectedListener() {
         @SuppressLint("NonConstantResourceId")
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {

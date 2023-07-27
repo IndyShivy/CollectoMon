@@ -1,5 +1,7 @@
 package com.example.collectomon;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class HomeFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeFragment extends Fragment{
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     BottomNavigationView navigationView;
@@ -53,6 +55,8 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
     private SearchFragment searchFragment;
     private CollectionFragment collectionFragment;
 
+    private static final int REQUEST_CODE_WRITE_PERMISSION = 1001;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -68,7 +72,6 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //navigationView.setOnItemSelectedListener(this);
         addArtistButton = view.findViewById(R.id.addArtistButton);
         deleteArtistButton = view.findViewById(R.id.deleteArtistButton);
         homeFragment = new HomeFragment();
@@ -81,13 +84,20 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         db = new CardDatabase(context);
         sharedPreferences = requireActivity().getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
         artistNames = new ArrayList<>();
-        artistNames.add("Yuka Morii");
-        artistNames.add("Saya Tsuruta");
+        addArtistButton.getDrawable().setAlpha(200);
+        deleteArtistButton.getDrawable().setAlpha(200);
+
+
+        arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_item_artist, artistNames);
 
         Set<String> artistSet = sharedPreferences.getStringSet(ARTIST_KEY, null);
         if (artistSet != null) {
             artistNames = new ArrayList<>(artistSet);
         }
+        while (artistNames.size() < 5) {
+            artistNames.add("");
+        }
+
         saveArtistList(artistNames);
 
         listViewArtists = view.findViewById(R.id.listViewArtists);  // Find the ListView
@@ -124,9 +134,12 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
                     listViewArtists.setItemChecked(checkedPosition, false);
                     checkedPosition = -1;
                     Toast.makeText(requireContext(), "Artist deleted", Toast.LENGTH_SHORT).show();
+                    pulseAnimation(deleteArtistButton);
                     saveArtistList(artistNames);
+
                 } else {
                     Toast.makeText(requireContext(), "No artist selection", Toast.LENGTH_SHORT).show();
+                    pulseAnimation(addArtistButton);
                 }
             }
         });
@@ -136,9 +149,12 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             public void onClick(View v) {
                 if (addArtist.getText().toString().isEmpty()) {
                     Toast.makeText(requireContext(), "No artist name", Toast.LENGTH_SHORT).show();
+                    pulseAnimation(addArtistButton);
                 } else {
                     String name = addArtist.getText().toString();
+
                     addArtistToList(name);
+                    pulseAnimation(addArtistButton);
                 }
             }
         });
@@ -157,13 +173,18 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
     }
 
     public void addArtistToList(String name) {
-        artistNames.add(name);
-        arrayAdapter.notifyDataSetChanged();
-        addArtist.setText("");
-        listViewArtists.setItemChecked(artistNames.size() - 1, true);
-        checkedPosition = artistNames.size() - 1;
-        saveArtistList(artistNames);
+        if (!artistNames.contains(name)) {
+            artistNames.add(name);
+            arrayAdapter.notifyDataSetChanged();
+            addArtist.setText("");
+            listViewArtists.setItemChecked(artistNames.size() - 1, true);
+            checkedPosition = artistNames.size() - 1;
+            saveArtistList(artistNames);
+        } else {
+            Toast.makeText(context, "Artist " + name + " is already in the list.", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     private void saveArtistList(List<String> artistList) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -172,6 +193,7 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
         editor.apply();
     }
 
+    /*
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -186,6 +208,19 @@ public class HomeFragment extends Fragment implements NavigationView.OnNavigatio
             // Handle Collection menu item click
         }
         return true;
+    }
+    */
+
+    private void pulseAnimation(ImageButton button) {
+        ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
+                button,
+                PropertyValuesHolder.ofFloat("scaleX", 1.1f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.1f)
+        );
+        scaleDown.setDuration(500);
+        scaleDown.setRepeatCount(ObjectAnimator.RESTART);
+        scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
+        scaleDown.start();
     }
 
 }

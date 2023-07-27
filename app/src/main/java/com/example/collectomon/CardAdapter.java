@@ -1,12 +1,11 @@
 package com.example.collectomon;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +45,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         cardDatabase = new CardDatabase(context);
         return new ViewHolder(view);
     }
+
+    @SuppressLint("NotifyDataSetChanged")
     public void filterList(List<CardItem> filteredList) {
         cardItems = filteredList;
         notifyDataSetChanged();
@@ -54,19 +55,18 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (position >= cardItems.size()) {
-            return; // Avoid accessing out-of-bounds positions
+            return;
         }
 
         CardItem cardItem = cardItems.get(position);
         boolean isChecked = databaseHelper.isCardExists(cardItem.getCardId());
-        cardItem.setChecked(isChecked); // Set the checked state of the CardItem
+        cardItem.setChecked(isChecked);
 
-        // Set the checkbox checked state
         holder.checkbox.setChecked(cardItem.isChecked());
 
         Picasso.get()
                 .load(cardItem.getImageSrc())
-                .resize(600,600 )
+                .resize(600, 600)
                 .centerInside()
                 .into(holder.imageView);
 
@@ -77,40 +77,20 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         holder.checkbox.setOnCheckedChangeListener(null);
         holder.checkbox.setChecked(cardItem.isChecked());
 
-        holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cardItem.setChecked(isChecked);
-
-                if (!cardDatabase.isCardExists(cardItem.getCardId())) {
-                    //databaseHelper.addCard(cardItem);
-                    //Log.d("CardAdded", cardItem.getCardId() + cardItem.getCardName());
-                } else if (!isChecked && cardDatabase.isCardExists(cardItem.getCardId())) {
-                    //databaseHelper.deleteCard(cardItem);
-                    //Log.d("CardRemoved", cardItem.getCardId() + cardItem.getCardName());
-                }
-            }
-        });
+        holder.checkbox.setOnCheckedChangeListener((buttonView, isChecked1) -> cardItem.setChecked(isChecked1));
     }
-
-
-
-
 
     @Override
     public int getItemCount() {
-
         return cardItems.size();
     }
 
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView cardNameTextView;
         TextView setDetailsTextView;
         TextView cardDetailsTextView;
         CheckBox checkbox;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -119,13 +99,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             setDetailsTextView = itemView.findViewById(R.id.setDetailsTextView);
             cardDetailsTextView = itemView.findViewById(R.id.cardDetailsTextView);
             checkbox = itemView.findViewById(R.id.checkbox);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    checkbox.setChecked(!checkbox.isChecked());
-
-                }
-            });
+            itemView.setOnClickListener(v -> checkbox.setChecked(!checkbox.isChecked()));
         }
     }
 

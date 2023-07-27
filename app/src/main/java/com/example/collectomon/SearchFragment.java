@@ -146,7 +146,6 @@ public class SearchFragment extends Fragment {
         if (artistSet != null) {
             artistNames = new ArrayList<>(artistSet);
         }
-        addCards.getDrawable().setAlpha(200);
 
         spinnerArtists = rootView.findViewById(R.id.spinnerArtists);
         spinnerAdapter = new CustomSpinnerAdapter(context, artistNames);
@@ -259,6 +258,7 @@ public class SearchFragment extends Fragment {
 
                     if (activity != null) {
                         activity.runOnUiThread(new Runnable() {
+                            @SuppressLint("NotifyDataSetChanged")
                             @Override
                             public void run() {
                                 cardAdapter.notifyDataSetChanged();

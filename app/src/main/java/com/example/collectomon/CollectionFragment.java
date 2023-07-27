@@ -65,9 +65,6 @@ public class CollectionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_collection, container, false);
-
-
-
         cardItems = new ArrayList<>();
         recyclerView = rootView.findViewById(R.id.recyclerView);
         collectionAdapter = new CollectionAdapter(new ArrayList<>(), requireContext());
@@ -82,7 +79,6 @@ public class CollectionFragment extends Fragment {
         listViewArtists.setAdapter(arrayAdapter);
         searchEditText = rootView.findViewById(R.id.searchEditText1);
         searchEditText.addTextChangedListener(textWatcher);
-        deleteCards.getDrawable().setAlpha(200);
         listViewArtists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
