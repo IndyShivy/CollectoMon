@@ -4,7 +4,9 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,11 +96,8 @@ public class HomeFragment extends Fragment{
         if (artistSet != null) {
             artistNames = new ArrayList<>(artistSet);
         }
-        while (artistNames.size() < 5) {
-            artistNames.add("");
-        }
-
         saveArtistList(artistNames);
+
 
         listViewArtists = view.findViewById(R.id.listViewArtists);  // Find the ListView
         arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_item_artist, artistNames);
@@ -139,7 +138,7 @@ public class HomeFragment extends Fragment{
 
                 } else {
                     Toast.makeText(requireContext(), "No artist selection", Toast.LENGTH_SHORT).show();
-                    pulseAnimation(addArtistButton);
+                    pulseAnimation(deleteArtistButton);
                 }
             }
         });
@@ -151,8 +150,8 @@ public class HomeFragment extends Fragment{
                     Toast.makeText(requireContext(), "No artist name", Toast.LENGTH_SHORT).show();
                     pulseAnimation(addArtistButton);
                 } else {
-                    String name = addArtist.getText().toString();
 
+                    String name = addArtist.getText().toString();
                     addArtistToList(name);
                     pulseAnimation(addArtistButton);
                 }
@@ -184,6 +183,8 @@ public class HomeFragment extends Fragment{
             Toast.makeText(context, "Artist " + name + " is already in the list.", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 
     private void saveArtistList(List<String> artistList) {
@@ -221,6 +222,6 @@ public class HomeFragment extends Fragment{
         scaleDown.setRepeatCount(ObjectAnimator.RESTART);
         scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
         scaleDown.start();
-    }
 
+    }
 }

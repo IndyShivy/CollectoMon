@@ -62,6 +62,7 @@ public class CollectionFragment extends Fragment {
         databaseHelper = new CardDatabase(context);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_collection, container, false);

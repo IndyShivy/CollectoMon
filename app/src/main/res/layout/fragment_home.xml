@@ -1,90 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_color"
     tools:context=".HomeFragment">
+
+
+    <View
+        android:id="@+id/border2"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_centerInParent="true"
+        android:background="#131F42"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteY="55dp" />
+
+    <View
+        android:id="@+id/border3"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="55dp"
+        android:background="#131F42"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/border"
+        android:layout_width="228dp"
+        android:layout_height="242dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="332dp"
+        android:background="#303030"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.169"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/listViewArtists"
         android:layout_width="228dp"
         android:layout_height="242dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="336dp"
         android:choiceMode="singleChoice"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
+        android:elevation="1dp"
         android:listSelector="#4A4949"
         android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.169"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/deleteArtistButton"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="188dp"
+        android:background="@drawable/circle_background"
+        android:elevation="5dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="@+id/listViewArtists"
+        app:layout_constraintStart_toStartOf="@+id/listViewArtists"
+        app:layout_constraintTop_toTopOf="@+id/listViewArtists"
+        app:srcCompat="@drawable/minun" />
+
     <Button
-        android:id="@+id/restoreButton"
+        android:id="@+id/backupButton"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:layout_marginTop="236dp"
-        android:backgroundTint="@color/icon_background"
-        android:text="Restore"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="364dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="Backup"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.877"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/border"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/searchCard"
+        android:layout_width="284dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="Add artist name here (exact)"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/listViewArtists"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.244"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.985" />
 
     <ImageButton
         android:id="@+id/addArtistButton"
         android:layout_width="58dp"
         android:layout_height="58dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:scaleType="centerInside"
+        android:layout_marginTop="268dp"
         android:background="@drawable/circle_background"
+        android:scaleType="centerInside"
         app:layout_constraintStart_toEndOf="@+id/searchCard"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/plusle" />
 
-    <ImageButton
-        android:id="@+id/deleteArtistButton"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="284dp"
-        android:background="@drawable/circle_background"
-        android:elevation="5dp"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.306"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/minun" />
-
-    <EditText
-        android:id="@+id/searchCard"
-        android:layout_width="284dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="44dp"
-        android:ems="10"
-        android:hint="Type artist name"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.22"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
-        android:id="@+id/backupButton"
+        android:id="@+id/restoreButton"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        android:layout_marginTop="128dp"
-        android:backgroundTint="@color/colorAccent"
-        android:text="Backup"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="464dp"
+        android:backgroundTint="@color/icon_background"
+        android:text="Restore"
         android:textColor="#FFFFFF"
+        app:layout_constraintStart_toEndOf="@+id/border"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="224dp"
+        android:layout_height="205dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginBottom="40dp"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        android:src="@drawable/homelogo"
+        app:layout_constraintBottom_toTopOf="@+id/searchCard"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.877"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
