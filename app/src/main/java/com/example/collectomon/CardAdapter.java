@@ -20,20 +20,13 @@ import java.util.List;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
     private List<CardItem> cardItems;
-    private Context context;
+    private final Context context;
     private CardDatabase databaseHelper;
-    private boolean[] selectedPositions;
     ArrayList<CardItem> cardStuff;
-    private CardDatabase cardDatabase;
+
     public CardAdapter(List<CardItem> cardItems, Context context) {
         this.cardItems = cardItems;
         this.context = context;
-    }
-
-    public CardAdapter(List<CardItem> cardItems, Context context, boolean[] selectedPositions) {
-        this.cardItems = cardItems;
-        this.context = context;
-        this.selectedPositions = selectedPositions;
     }
 
     @NonNull
@@ -42,7 +35,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemrow, parent, false);
         databaseHelper = new CardDatabase(context);
         cardStuff = new ArrayList<>();
-        cardDatabase = new CardDatabase(context);
         return new ViewHolder(view);
     }
 

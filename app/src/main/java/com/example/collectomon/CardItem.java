@@ -1,12 +1,14 @@
 package com.example.collectomon;
 
+import androidx.annotation.NonNull;
+
 public class CardItem {
-    private String artistName;
-    private String cardID;
-    private String imageSrc;
-    private String cardName;
-    private String setDetails;
-    private String cardDetails;
+    private final String artistName;
+    private final String cardID;
+    private final String imageSrc;
+    private final String cardName;
+    private final String setDetails;
+    private final String cardDetails;
     private boolean isChecked;
 
     public CardItem(String artistName, String cardID, String imageSrc, String cardName, String setDetails, String cardDetails) {
@@ -47,6 +49,7 @@ public class CardItem {
         return cardID;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return cardID + " " + imageSrc + " " + cardName + " " + setDetails + " " + cardDetails;

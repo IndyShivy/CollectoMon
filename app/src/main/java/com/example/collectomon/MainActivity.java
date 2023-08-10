@@ -1,36 +1,23 @@
 package com.example.collectomon;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
 import android.view.Menu;
 import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.lang.reflect.Field;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private FragmentManager fragmentManager;
-
-    private HomeFragment homeFragment;
-    private SearchFragment searchFragment;
-    private CollectionFragment collectionFragment;
-
-    private Fragment activeFragment;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -43,17 +30,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         bottomNavigationView = findViewById(R.id.navigationView);
-        //bottomNavigationView.setOnNavigationItemSelectedListener(navItemSelectedListener);
         bottomNavigationView.setOnItemSelectedListener(navItemSelectedListener);
-        fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
-        homeFragment = new HomeFragment();
-        searchFragment = new SearchFragment();
-        collectionFragment = new CollectionFragment();
+        HomeFragment homeFragment = new HomeFragment();
 
-        activeFragment = homeFragment;
 
-        // Set the initial fragment
+
         fragmentManager.beginTransaction()
                 .add(R.id.fragmentContainer, homeFragment)
                 .commit();
@@ -62,13 +45,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.navigationView);
 
     }
-    private NavigationBarView.OnItemSelectedListener  navItemSelectedListener = new NavigationBarView.OnItemSelectedListener() {
+    private final NavigationBarView.OnItemSelectedListener  navItemSelectedListener = new NavigationBarView.OnItemSelectedListener() {
         @SuppressLint("NonConstantResourceId")
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment fragment = null;
             Menu menu = bottomNavigationView.getMenu();
-            //changeIcon(item.getItemId());
+
+
             int id = item.getItemId();
             if (id == R.id.menu_home) {
                 item.setIcon(R.drawable.icon_home_filled);
