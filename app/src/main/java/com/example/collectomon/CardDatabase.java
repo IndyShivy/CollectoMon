@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -55,6 +57,7 @@ public class CardDatabase extends SQLiteOpenHelper {
     }
 
 
+//save and restore backup
 
 
     public void saveBackup() {
@@ -78,7 +81,7 @@ public class CardDatabase extends SQLiteOpenHelper {
             fos.close();
             fis.close();
 
-            Toast.makeText(context,"Database backup created successfully @downloads",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Database backup created successfully",Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(context,"Failed to create backup",Toast.LENGTH_SHORT).show();
@@ -108,12 +111,96 @@ public class CardDatabase extends SQLiteOpenHelper {
             fos.close();
             fis.close();
 
-            Toast.makeText(context,"Database backup restored successfully from @downloads",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Database backup restored successfully",Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(context,"Failed to restore database backup, check @downloads folder",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Failed to restore database backup, missing backup",Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+
+    /*
+
+    public void saveBackup() {
+        String backupFileName = "CollectomonDatabase.db";
+        //File backupFile = new File(context.getExternalFilesDir(null), backupFileName);
+
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+
+            File dbFile = new File(db.getPath());
+            FileInputStream fis = new FileInputStream(dbFile);
+
+            // Get the Downloads directory
+            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File downloadFile = new File(downloadsDir, backupFileName);
+
+            FileOutputStream fos = new FileOutputStream(downloadFile);
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+
+            fos.flush();
+            fos.close();
+            fis.close();
+
+            Toast.makeText(context, "Database backup created successfully", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Failed to create backup", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+    public void restoreBackup() {
+        String backupFileName = "CollectomonDatabase.db";
+
+        // Get the Downloads directory
+        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File backupFile = new File(downloadsDir, backupFileName);
+
+        if (!backupFile.exists()) {
+            Toast.makeText(context, "Failed to restore database backup, missing backup", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+
+            // Clear the existing table
+            db.execSQL("DELETE FROM " + TABLE_NAME);
+
+            FileInputStream fis = new FileInputStream(backupFile);
+            FileOutputStream fos = new FileOutputStream(db.getPath());
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+
+            fos.flush();
+            fos.close();
+            fis.close();
+
+            Toast.makeText(context, "Database backup restored successfully", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Failed to restore database backup", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+     */
+
+
+
 
 
 
@@ -178,11 +265,7 @@ public class CardDatabase extends SQLiteOpenHelper {
                 values.put(COLUMN_CARD_NAME, card.getCardName());
                 values.put(COLUMN_SET_DETAILS, card.getSetDetails());
                 values.put(COLUMN_CARD_DETAILS, card.getCardDetails());
-
                 db.insert(TABLE_NAME, null, values);
-                Log.d("CardDatabase", "Added Card: Name" + card.getArtistName() + "ID:" + card.getCardId() + "IAMGE" + card.getImageUrl() + card.getCardName() + card.getCardDetails() + card.getSetDetails());
-            } else {
-                Log.d("CardDatabase", "Skipped Card: ID " + card.getCardId() + " already exists in the database.");
             }
         }
 
@@ -197,9 +280,6 @@ public class CardDatabase extends SQLiteOpenHelper {
 
             if (isCardIdExists(db, cardId)) {
                 db.delete(TABLE_NAME, CARD_ID + " = ?", new String[]{cardId});
-                Log.d("CardDatabase", "Deleted Card: ID " + card.getCardId());
-            } else {
-                Log.d("CardDatabase", "Card: ID " + card.getCardId() + " does not exist in the database.");
             }
         }
 
@@ -287,7 +367,7 @@ public class CardDatabase extends SQLiteOpenHelper {
             values.put(COLUMN_CARD_DETAILS, cardItem.getCardDetails());
 
             db.insert(TABLE_NAME, null, values);
-            Log.d("CardDatabase", "Added Card: Name" + cardItem.getArtistName() + "ID:" + cardItem.getCardId() + "IAMGE" + cardItem.getImageUrl() + cardItem.getCardName() + cardItem.getCardDetails() + cardItem.getSetDetails());
+            Log.d("CardDatabase", "Added Card: Name" + cardItem.getArtistName() + "ID:" + cardItem.getCardId() + "IMAGE" + cardItem.getImageUrl() + cardItem.getCardName() + cardItem.getCardDetails() + cardItem.getSetDetails());
         } else {
             Log.d("CardDatabase", "Skipped Card: ID " + cardItem.getCardId() + " already exists in the database.");
         }

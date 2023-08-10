@@ -57,10 +57,10 @@ public class HomeFragment extends Fragment{
     private SearchFragment searchFragment;
     private CollectionFragment collectionFragment;
 
-    private static final int REQUEST_CODE_WRITE_PERMISSION = 1001;
+
 
     public HomeFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -103,67 +103,41 @@ public class HomeFragment extends Fragment{
         arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_item_artist, artistNames);
         listViewArtists.setAdapter(arrayAdapter);
         listViewArtists.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        listViewArtists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                checkedPosition = position;
+        listViewArtists.setOnItemClickListener((parent, view1, position, id) -> checkedPosition = position);
+
+        backup.setOnClickListener(v -> db.saveBackup());
+
+        restore.setOnClickListener(v -> db.restoreBackup());
+
+        deleteArtistButton.setOnClickListener(v -> {
+            if (checkedPosition != -1) {
+                artistNames.remove(checkedPosition);
+                arrayAdapter.notifyDataSetChanged();
+                listViewArtists.setItemChecked(checkedPosition, false);
+                checkedPosition = -1;
+                Toast.makeText(requireContext(), "Artist deleted", Toast.LENGTH_SHORT).show();
+                pulseAnimation(deleteArtistButton);
+                saveArtistList(artistNames);
+
+            } else {
+                Toast.makeText(requireContext(), "No artist selection", Toast.LENGTH_SHORT).show();
+                pulseAnimation(deleteArtistButton);
             }
         });
 
-        backup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.saveBackup();
-            }
-        });
+        addArtistButton.setOnClickListener(v -> {
+            if (addArtist.getText().toString().isEmpty()) {
+                Toast.makeText(requireContext(), "No artist name", Toast.LENGTH_SHORT).show();
+                pulseAnimation(addArtistButton);
+            } else {
 
-        restore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.restoreBackup();
-            }
-        });
-
-        deleteArtistButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkedPosition != -1) {
-                    artistNames.remove(checkedPosition);
-                    arrayAdapter.notifyDataSetChanged();
-                    listViewArtists.setItemChecked(checkedPosition, false);
-                    checkedPosition = -1;
-                    Toast.makeText(requireContext(), "Artist deleted", Toast.LENGTH_SHORT).show();
-                    pulseAnimation(deleteArtistButton);
-                    saveArtistList(artistNames);
-
-                } else {
-                    Toast.makeText(requireContext(), "No artist selection", Toast.LENGTH_SHORT).show();
-                    pulseAnimation(deleteArtistButton);
-                }
-            }
-        });
-
-        addArtistButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (addArtist.getText().toString().isEmpty()) {
-                    Toast.makeText(requireContext(), "No artist name", Toast.LENGTH_SHORT).show();
-                    pulseAnimation(addArtistButton);
-                } else {
-
-                    String name = addArtist.getText().toString();
-                    addArtistToList(name);
-                    pulseAnimation(addArtistButton);
-                }
+                String name = addArtist.getText().toString();
+                addArtistToList(name);
+                pulseAnimation(addArtistButton);
             }
         });
 
         return view;
-    }
-
-
-    private void closeDrawer() {
-        drawerLayout.closeDrawer(navigationView);
     }
 
     @Override
@@ -193,24 +167,6 @@ public class HomeFragment extends Fragment{
         editor.putStringSet(ARTIST_KEY, set);
         editor.apply();
     }
-
-    /*
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.menu_home) {
-            // Handle Home menu item click
-        } else if (id == R.id.menu_search) {
-            SearchFragment searchFragment = new SearchFragment();
-            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragmentContainer, searchFragment);
-            transaction.commit();
-        } else if (id == R.id.menu_collection) {
-            // Handle Collection menu item click
-        }
-        return true;
-    }
-    */
 
     private void pulseAnimation(ImageButton button) {
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(

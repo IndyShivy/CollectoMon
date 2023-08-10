@@ -233,13 +233,17 @@ public class SearchFragment extends Fragment {
                             Element cardNameElement = columnElements.get(1).selectFirst("font");
                             String cardName = (cardNameElement != null) ? cardNameElement.text() : "";
 
+                            if (cardName.equals("")) {
+                                Elements aElements = columnElements.get(1).select("a");
+                                    cardName = aElements.text();
+                            }
+
                             Element setLink = columnElements.get(2).selectFirst("a");
                             String setDetails = (setLink != null) ? setLink.text() : "";
 
                             String cardDetails = columnElements.get(2).ownText();
                             String cardId = name + cardName + setDetails + cardDetails;
                             CardItem cardItem = new CardItem(name, cardId, imageSrc1, cardName, setDetails, cardDetails);
-                            Log.d("Test", cardItem.getCardId());
 
                             boolean isDuplicate = false;
                             for (CardItem card : cards) {

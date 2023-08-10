@@ -1,11 +1,11 @@
 package com.example.collectomon;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,21 +53,15 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         holder.setDetailsTextView.setText(cardItem.getSetDetails());
         holder.cardDetailsTextView.setText(cardItem.getCardDetails());
 
-        holder.checkbox.setOnCheckedChangeListener(null); // Clear any previous listener
-        holder.checkbox.setChecked(cardItem.isChecked()); // Set the initial checked state
+        holder.checkbox.setOnCheckedChangeListener(null);
+        holder.checkbox.setChecked(cardItem.isChecked());
 
-        holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Update the isChecked value of the corresponding CardItem
-                cardItem.setChecked(isChecked);
-
-                // Add or remove the card details from the ArrayList based on the checkbox selection
-                if (isChecked) {
-                    cardStuff.add(cardItem);
-                } else {
-                    cardStuff.remove(cardItem);
-                }
+        holder.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            cardItem.setChecked(isChecked);
+            if (isChecked) {
+                cardStuff.add(cardItem);
+            } else {
+                cardStuff.remove(cardItem);
             }
         });
     }
@@ -77,7 +71,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         return cardItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView cardNameTextView;
         TextView setDetailsTextView;
@@ -91,22 +85,20 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             setDetailsTextView = itemView.findViewById(R.id.setDetailsTextView);
             cardDetailsTextView = itemView.findViewById(R.id.cardDetailsTextView);
             checkbox = itemView.findViewById(R.id.checkbox);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    checkbox.setChecked(!checkbox.isChecked());
-                    // Handle checkbox state change as per your requirements
-                }
+            itemView.setOnClickListener(v -> {
+                checkbox.setChecked(!checkbox.isChecked());
+
             });
         }
     }
 
     public List<CardItem> getSelectedCardItems() {
         List<CardItem> selectedItems = new ArrayList<>(cardStuff);
-        cardStuff.clear(); // Clear the cardStuff ArrayList after retrieving the selected items
+        cardStuff.clear();
         return selectedItems;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filterList(List<CardItem> filteredList) {
         cardItems = filteredList;
         notifyDataSetChanged();
