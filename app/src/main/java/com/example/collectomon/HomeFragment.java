@@ -28,9 +28,7 @@ public class HomeFragment extends Fragment{
     private static final String PREFS_FILE_NAME = "MyPrefsFile";
     private static final String ARTIST_KEY = "artist";
     private SharedPreferences sharedPreferences;
-    Button backup, restore;
-    ImageButton addArtistButton, deleteArtistButton;
-
+    Button backup, restore,addArtistButton, deleteArtistButton;
     CardDatabase db;
     Context context;
     private ListView listViewArtists;
@@ -63,8 +61,8 @@ public class HomeFragment extends Fragment{
         db = new CardDatabase(context);
         sharedPreferences = requireActivity().getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
         artistNames = new ArrayList<>();
-        addArtistButton.getDrawable().setAlpha(200);
-        deleteArtistButton.getDrawable().setAlpha(200);
+        //addArtistButton.getDrawable().setAlpha(200);
+        //deleteArtistButton.getDrawable().setAlpha(200);
 
 
         arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_item_artist, artistNames);
@@ -145,7 +143,7 @@ public class HomeFragment extends Fragment{
         editor.apply();
     }
 
-    private void pulseAnimation(ImageButton button) {
+    private void pulseAnimation(Button button) {
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 button,
                 PropertyValuesHolder.ofFloat("scaleX", 1.1f),
