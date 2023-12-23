@@ -4,14 +4,10 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,15 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,27 +24,17 @@ import java.util.Set;
 
 
 public class HomeFragment extends Fragment{
-    Toolbar toolbar;
-    DrawerLayout drawerLayout;
-    BottomNavigationView navigationView;
-    ActionBarDrawerToggle drawerToggle;
     private List<String> artistNames;
     private static final String PREFS_FILE_NAME = "MyPrefsFile";
     private static final String ARTIST_KEY = "artist";
     private SharedPreferences sharedPreferences;
-    Button backup, restore;
-    ImageButton addArtistButton, deleteArtistButton;
-
+    Button backup, restore,addArtistButton, deleteArtistButton;
     CardDatabase db;
     Context context;
     private ListView listViewArtists;
     private ArrayAdapter<String> arrayAdapter;
     private int checkedPosition = -1;
     EditText addArtist;
-    private HomeFragment homeFragment;
-    private SearchFragment searchFragment;
-    private CollectionFragment collectionFragment;
-
 
 
     public HomeFragment() {
@@ -76,9 +54,6 @@ public class HomeFragment extends Fragment{
 
         addArtistButton = view.findViewById(R.id.addArtistButton);
         deleteArtistButton = view.findViewById(R.id.deleteArtistButton);
-        homeFragment = new HomeFragment();
-        searchFragment = new SearchFragment();
-        collectionFragment = new CollectionFragment();
         addArtist = view.findViewById(R.id.searchCard);
         backup = view.findViewById(R.id.backupButton);
         restore = view.findViewById(R.id.restoreButton);
@@ -86,8 +61,8 @@ public class HomeFragment extends Fragment{
         db = new CardDatabase(context);
         sharedPreferences = requireActivity().getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
         artistNames = new ArrayList<>();
-        addArtistButton.getDrawable().setAlpha(200);
-        deleteArtistButton.getDrawable().setAlpha(200);
+        //addArtistButton.getDrawable().setAlpha(200);
+        //deleteArtistButton.getDrawable().setAlpha(200);
 
 
         arrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.list_item_artist, artistNames);
@@ -168,7 +143,7 @@ public class HomeFragment extends Fragment{
         editor.apply();
     }
 
-    private void pulseAnimation(ImageButton button) {
+    private void pulseAnimation(Button button) {
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(
                 button,
                 PropertyValuesHolder.ofFloat("scaleX", 1.1f),

@@ -1,7 +1,6 @@
 package com.example.collectomon;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +19,10 @@ import java.util.List;
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> {
 
     private List<CardItem> cardItems;
-    private Context context;
-    private CardDatabase databaseHelper;
-    private ArrayList<CardItem> cardStuff;
+    private final ArrayList<CardItem> cardStuff;
 
-    public CollectionAdapter(List<CardItem> cardItems, Context context) {
+    public CollectionAdapter(List<CardItem> cardItems) {
         this.cardItems = cardItems;
-        this.context = context;
-        this.databaseHelper = new CardDatabase(context);
         this.cardStuff = new ArrayList<>();
     }
 
@@ -42,7 +37,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CardItem cardItem = cardItems.get(position);
 
-        // Load image using Picasso
         Picasso.get()
                 .load(cardItem.getImageSrc())
                 .resize(600, 600)
@@ -85,10 +79,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             setDetailsTextView = itemView.findViewById(R.id.setDetailsTextView);
             cardDetailsTextView = itemView.findViewById(R.id.cardDetailsTextView);
             checkbox = itemView.findViewById(R.id.checkbox);
-            itemView.setOnClickListener(v -> {
-                checkbox.setChecked(!checkbox.isChecked());
-
-            });
+            itemView.setOnClickListener(v -> checkbox.setChecked(!checkbox.isChecked()));
         }
     }
 

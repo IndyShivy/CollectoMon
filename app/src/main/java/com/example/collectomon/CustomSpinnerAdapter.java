@@ -10,8 +10,8 @@ import android.widget.TextView;
 import java.util.List;
 
 public class CustomSpinnerAdapter extends BaseAdapter {
-    private LayoutInflater inflater;
-    private List<String> artistList;
+    private final LayoutInflater inflater;
+    private final List<String> artistList;
 
     public CustomSpinnerAdapter(Context context, List<String> artistList) {
         inflater = LayoutInflater.from(context);
